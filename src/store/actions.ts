@@ -107,3 +107,27 @@ export const closeIdSearchMode = (context: A) => {
   context.commit('CLEAR_ITEMS')
   void context.dispatch('loadBins')
 }
+
+export const updateBinStatus = (context: A, payload: any) => {
+  context.commit('SET_LOADING', 1)
+  Vue.prototype.$apiManager.put(`/bin/status/${payload.binId}`, { status: payload.status })
+    .then(() => {
+      context.commit('UPDATE_BIN', payload)
+      Notify.create({
+        progress: true,
+        message: payload.status === 'enabled' ? 'Smart bin activated' : 'Smart bin deactivated',
+        color: 'positive',
+        timeout: 3000
+      })
+    })
+    .catch((err: any) => {
+      console.log(err.response.data.error)
+      Notify.create({
+        progress: true,
+        message: JSON.stringify(err.response.data.error).replace(/["\\{}]/g, ' ').trim(),
+        color: 'negative',
+        timeout: 7000
+      })
+    })
+    .finally(() => context.commit('SET_LOADING', -1))
+}

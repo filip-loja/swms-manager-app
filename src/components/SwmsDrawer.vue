@@ -74,6 +74,7 @@
 					<p class="q-mb-none text-grey-7">Device status</p>
 					<q-btn-toggle
 						v-model="model.status"
+						@input="changeStatus"
 						spread
 						no-caps
 						unelevated
@@ -115,7 +116,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { BinDetail, GenericOptionItem } from 'src/store/store'
+import { BinDetail, GenericOptionItem, TypeBinStatus } from 'src/store/store'
 import { copyToClipboard } from 'quasar'
 
 const generateModel = (): BinDetail => {
@@ -170,6 +171,13 @@ export default Vue.extend({
           timeout: 2500
         })
 			})
+		},
+		changeStatus (newStatus: TypeBinStatus) {
+	    const payload = {
+	      binId: this.binId,
+				status: newStatus
+			}
+			void this.$store.dispatch('updateBinStatus', payload)
 		}
 	},
 	computed: {
