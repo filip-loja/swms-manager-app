@@ -140,7 +140,18 @@ export default Vue.extend({
 	    void this.$store.dispatch('closeDrawer')
 		},
 		onSave (): void {
-	    // TODO implement
+			const payload: BinDetail = {
+			  binId: this.binId,
+	      type: this.model.type.value,
+				lat: this.model.lat,
+				lon: this.model.lon,
+				district: this.model.district
+			}
+			if (this.inCreateMode) {
+			  console.log('NOT IMPLEMENTED')
+			} else {
+			  void this.$store.dispatch('updateBinDetails', payload)
+			}
 		},
     onDrawerStart (): void {
 	    if (this.inCreateMode) {

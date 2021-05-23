@@ -1,5 +1,5 @@
 import { ActionContext } from 'vuex'
-import { BinFilter, StateRoot } from 'src/store/store'
+import { BinDetail, BinFilter, StateRoot } from 'src/store/store'
 import { Notify } from 'quasar'
 import Vue from 'vue'
 
@@ -119,6 +119,33 @@ export const updateBinStatus = (context: A, payload: any) => {
         color: 'positive',
         timeout: 3000
       })
+    })
+    .catch((err: any) => {
+      console.log(err.response.data.error)
+      Notify.create({
+        progress: true,
+        message: JSON.stringify(err.response.data.error).replace(/["\\{}]/g, ' ').trim(),
+        color: 'negative',
+        timeout: 7000
+      })
+    })
+    .finally(() => context.commit('SET_LOADING', -1))
+}
+
+export const updateBinDetails = (context: A, payload: BinDetail) => {
+  context.commit('SET_LOADING', 1)
+  const httpPayload = { ...payload }
+  delete httpPayload.binId
+  Vue.prototype.$apiManager.put(`/bin/detail/${payload.binId}`, httpPayload)
+    .then(() => {
+      context.commit('UPDATE_BIN', payload)
+      Notify.create({
+        progress: true,
+        message: 'Smart bin updated successfully',
+        color: 'positive',
+        timeout: 2000
+      })
+      return context.dispatch('closeDrawer')
     })
     .catch((err: any) => {
       console.log(err.response.data.error)
