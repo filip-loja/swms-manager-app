@@ -15,8 +15,7 @@
 
     <q-page-container>
 			<swms-option-panel />
-			<pre>{{ binItems }}</pre>
-			<q-btn v-if="hasMore" @click="loadMore">Load more</q-btn>
+			<swms-bin-table />
     </q-page-container>
   </q-layout>
 </template>
@@ -25,11 +24,11 @@
 import Vue from 'vue'
 import SwmsDrawer from 'components/SwmsDrawer.vue'
 import SwmsOptionPanel from 'components/SwmsOptionPanel.vue'
-import { BinDetail } from 'src/store/store'
+import SwmsBinTable from 'components/SwmsBinTable.vue'
 
 export default Vue.extend({
   name: 'MainLayout',
-	components: { SwmsDrawer, SwmsOptionPanel },
+	components: { SwmsDrawer, SwmsOptionPanel, SwmsBinTable },
   data() {
     return {
     }
@@ -37,21 +36,7 @@ export default Vue.extend({
 	methods: {
     openDrawer (bindId: string) {
       void this.$store.dispatch('openDrawer', bindId)
-		},
-		loadMore () {
-      void this.$store.dispatch('loadBins')
 		}
-	},
-	computed: {
-    binItems (): BinDetail[] {
-      return this.$store.state.binItems as BinDetail[]
-		},
-		hasMore (): boolean {
-      return !!this.$store.state.nextToken
-		}
-	},
-	mounted () {
-    this.loadMore()
-  }
+	}
 })
 </script>

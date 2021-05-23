@@ -144,7 +144,14 @@ export default Vue.extend({
 	    if (this.inCreateMode) {
 	      this.model = generateModel()
 			} else {
-	      // TODO laod from store
+	      this.model = JSON.parse(JSON.stringify(this.$store.state.binItems.find((item: BinDetail) => item.binId === this.binId)))
+				this.model.type = {
+          label: this.model.type.charAt(0).toUpperCase() + this.model.type.slice(1),
+					value: this.model.type
+				}
+			}
+	    if (!this.model) {
+        void this.$store.dispatch('closeDrawer')
 			}
 		},
     onDrawerHidden (): void {
