@@ -1,5 +1,6 @@
 import { ActionContext } from 'vuex'
 import { BinFilter, StateRoot } from 'src/store/store'
+import { Notify } from 'quasar'
 import Vue from 'vue'
 
 type A = ActionContext<StateRoot, StateRoot>
@@ -23,11 +24,38 @@ export const loadBins = (context: A, filterObj?: BinFilter) => {
     ...context.state.binFilter,
     token: context.state.nextToken
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   Vue.prototype.$apiManager.post('bin/list', payload).then((resp: any) => {
     context.commit('APPEND_ITEMS', resp.data.data.items)
     context.commit('SET_NEXT_TOKEN', resp.data.data.nextToken)
   }).catch((err: any) => {
-    console.log(err)
+    console.log(err.response.data.error)
+    Notify.create({
+      progress: true,
+      message: JSON.stringify(err.response.data.error).replace(/["\\{}]/g, ' ').trim(),
+      color: 'negative',
+      timeout: 7000
+    })
   })
+}
+
+export const deleteBin = (context: A, binId: string) => {
+  Vue.prototype.$apiManager.delete(`/bin/delete/${binId}`)
+    .then(() => {
+      context.commit('DELETE_BIN', binId)
+      Notify.create({
+        progress: true,
+        message: 'Smart bin was deleted successfully.',
+        color: 'positive',
+        timeout: 3000
+      })
+    })
+    .catch((err: any) => {
+      console.log(err.response.data.error)
+      Notify.create({
+        progress: true,
+        message: JSON.stringify(err.response.data.error).replace(/["\\{}]/g, ' ').trim(),
+        color: 'negative',
+        timeout: 7000
+      })
+    })
 }

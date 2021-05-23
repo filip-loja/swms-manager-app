@@ -15,7 +15,7 @@
 				<td><swms-badge :value="item.status" /></td>
 				<td>
 					<q-btn round flat color="primary" icon="visibility" size="sm" @click="viewDetails(item.binId)" />
-					<q-btn round flat color="negative" icon="delete" size="sm" />
+					<q-btn round flat color="negative" icon="delete" size="sm" @click="deleteBin(item.binId)" />
 				</td>
 			</tr>
 		</table>
@@ -47,7 +47,18 @@ export default Vue.extend({
     },
     viewDetails (bindId: string) {
       void this.$store.dispatch('openDrawer', bindId)
-    }
+    },
+    deleteBin (binId: string) {
+      this.$q.dialog({
+        title: 'Confirm your action',
+        message: `Do you really wish to delete this smart bin (${binId})?`,
+        ok: { color: 'negative', flat: true },
+				cancel: true,
+        persistent: true
+      }).onOk(() => {
+        void this.$store.dispatch('deleteBin', binId)
+      })
+		}
 	},
   mounted () {
     this.loadMore()

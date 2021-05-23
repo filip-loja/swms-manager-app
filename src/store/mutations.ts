@@ -1,4 +1,4 @@
-import { BinFilter, StateRoot } from 'src/store/store'
+import { BinDetail, BinFilter, StateRoot } from 'src/store/store'
 
 export const SET_DRAWER = (state: StateRoot, newState: boolean) => {
   state.drawerState = newState
@@ -25,5 +25,13 @@ export const CLEAR_ITEMS = (state: StateRoot) => {
 }
 
 export const SET_NEXT_TOKEN = (state: StateRoot, token: string) => {
+  // @ts-ignore
   state.nextToken = token
+}
+
+export const DELETE_BIN = (state: StateRoot, binId: string) => {
+  const index = state.binItems.findIndex((item: BinDetail) => item.binId === binId)
+  if (index >= 0) {
+    state.binItems.splice(index, 1)
+  }
 }
