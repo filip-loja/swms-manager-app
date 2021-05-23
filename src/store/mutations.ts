@@ -35,3 +35,7 @@ export const DELETE_BIN = (state: StateRoot, binId: string) => {
     state.binItems.splice(index, 1)
   }
 }
+
+export const SET_FIND_ID_FLAG = (state: StateRoot, flagValue: boolean) => {
+  state.idSearchActive = flagValue
+}

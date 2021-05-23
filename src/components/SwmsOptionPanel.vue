@@ -1,13 +1,13 @@
 <template>
 	<div class="swms-option-panel">
 		<div class="swms-btn-wrapper">
-			<q-btn @click="openDrawer(null)" no-caps flat color="primary">
+			<q-btn @click="openDrawer(null)" no-caps flat color="primary" :disable="idSearchActive">
 				Create new&nbsp;
 				<q-icon name="add" size="xs" />
 			</q-btn>
 		</div>
 
-		<q-btn @click="openFilterDialog" no-caps flat color="primary">
+		<q-btn @click="openFilterDialog" no-caps flat color="primary" :disable="idSearchActive">
 			Filter&nbsp;
 			<q-icon name="filter_alt" size="xs" />
 		</q-btn>
@@ -17,6 +17,8 @@
 				<q-btn round flat icon="search" @click="searchBin" />
 			</template>
 		</q-input>
+		&nbsp;
+		<q-btn flat outlined round v-if="idSearchActive" icon="cancel" color="negative" @click="closeIdSearchMode" />
 
 		<swms-filter-dialog />
 
@@ -41,7 +43,7 @@ export default Vue.extend({
     openFilterDialog () {
       this.$store.commit('SET_FILTER_DIALOG', true)
 		},
-		searchBin (): void {
+		searchBin () {
       let id = this.searchBinModel.trim()
 			if (!id) {
 			  return
@@ -49,10 +51,17 @@ export default Vue.extend({
       if (!id.startsWith('bin-')) {
         id = 'bin-' + Number(id).toString().padStart(3, '0')
 			}
-			console.log(id)
+			void this.$store.dispatch('findBinById', id)
+		},
+		closeIdSearchMode () {
+      this.searchBinModel = ''
+			void this.$store.dispatch('closeIdSearchMode')
 		}
   },
 	computed: {
+    idSearchActive (): boolean {
+      return this.$store.state.idSearchActive as boolean
+		}
 	}
 })
 </script>

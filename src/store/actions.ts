@@ -48,6 +48,9 @@ export const deleteBin = (context: A, binId: string) => {
         color: 'positive',
         timeout: 3000
       })
+      if (context.state.idSearchActive) {
+        return context.dispatch('closeIdSearchMode')
+      }
     })
     .catch((err: any) => {
       console.log(err.response.data.error)
@@ -58,4 +61,29 @@ export const deleteBin = (context: A, binId: string) => {
         timeout: 7000
       })
     })
+}
+
+export const findBinById = (context: A, binId: string) => {
+  Vue.prototype.$apiManager.get(`bin/${binId}`)
+    .then((resp: any) => {
+      context.commit('CLEAR_ITEMS')
+      context.commit('APPEND_ITEMS', [resp.data.data])
+      context.commit('SET_NEXT_TOKEN', undefined)
+      context.commit('SET_FIND_ID_FLAG', true)
+    })
+    .catch((err: any) => {
+      console.log(err.response.data.error)
+      Notify.create({
+        progress: true,
+        message: 'Smart bin was not found!',
+        color: 'negative',
+        timeout: 3000
+      })
+    })
+}
+
+export const closeIdSearchMode = (context: A) => {
+  context.commit('SET_FIND_ID_FLAG', false)
+  context.commit('CLEAR_ITEMS')
+  void context.dispatch('loadBins')
 }

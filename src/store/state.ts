@@ -12,5 +12,6 @@ export default (): StateRoot => ({
     status: [] as any
   },
   binItems: [],
-  nextToken: null
+  nextToken: null,
+  idSearchActive: false,
 })
