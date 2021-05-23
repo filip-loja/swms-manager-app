@@ -161,6 +161,36 @@ export const updateBinDetails = (context: A, payload: BinDetail) => {
     .finally(() => context.commit('SET_LOADING', -1))
 }
 
+export const createBin = (context: A, payload: BinDetail) => {
+  context.commit('SET_LOADING', 1)
+  Vue.prototype.$apiManager.post('bin/create', payload)
+    .then((resp: any) => {
+      payload.binId = resp.data.data
+      payload.status = 'disabled'
+      context.commit('CLEAR_ITEMS')
+      context.commit('APPEND_ITEMS', [payload])
+      context.commit('SET_NEXT_TOKEN', undefined)
+      context.commit('SET_FIND_ID_FLAG', true)
+      Notify.create({
+        progress: true,
+        message: 'Smart bin created successfully',
+        color: 'positive',
+        timeout: 2000
+      })
+      return context.dispatch('closeDrawer')
+    })
+    .catch((err: any) => {
+      console.log(err.response.data.error)
+      Notify.create({
+        progress: true,
+        message: JSON.stringify(err.response.data.error).replace(/["\\{}]/g, ' ').trim(),
+        color: 'negative',
+        timeout: 7000
+      })
+    })
+    .finally(() => context.commit('SET_LOADING', -1))
+}
+
 export const logIn = (context: A, payload: any) => {
   context.commit('SET_LOADING', 1)
   if (payload.username !== 'filip.loja' || payload.password !== 'swsmlnu') {

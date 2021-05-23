@@ -142,13 +142,14 @@ export default Vue.extend({
 		onSave (): void {
 			const payload: BinDetail = {
 			  binId: this.binId,
-	      type: this.model.type.value,
+	      type: this.model.type && this.model.type.value,
 				lat: this.model.lat,
 				lon: this.model.lon,
 				district: this.model.district
 			}
 			if (this.inCreateMode) {
-			  console.log('NOT IMPLEMENTED')
+			  delete payload.binId
+				void this.$store.dispatch('createBin', payload)
 			} else {
 			  void this.$store.dispatch('updateBinDetails', payload)
 			}
