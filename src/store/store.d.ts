@@ -4,9 +4,11 @@ export type TypeBinStatus = 'disabled' | 'enabled'
 
 export interface StateRoot {
   drawerState: boolean;
+  filterDialogState: boolean;
   activeBinId: string;
   binStatusValues: TypeBinStatus[];
   binTypeValues: TypeGarbage[];
+  binFilter: BinFilter;
 }
 
 export interface BinDetail {
@@ -22,4 +24,11 @@ export interface BinDetail {
 export interface GenericOptionItem {
   label: string;
   value: any;
+}
+
+export interface BinFilter {
+  status?: TypeBinStatus;
+  type?: TypeGarbage;
+  location?: any;
+  pageSize?: number;
 }

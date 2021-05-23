@@ -85,20 +85,20 @@
 					/>
 				</div>
 
-				<q-select
-					v-model="model.district"
-					label="Districts"
-					outlined
-					dense
-					bg-color="white"
-					use-input
-					use-chips
-					multiple
-					hide-dropdown-icon
-					input-debounce="0"
-					new-value-mode="add-unique"
-					class="q-mb-lg"
-				/>
+<!--				<q-select-->
+<!--					v-model="model.district"-->
+<!--					label="Districts"-->
+<!--					outlined-->
+<!--					dense-->
+<!--					bg-color="white"-->
+<!--					use-input-->
+<!--					use-chips-->
+<!--					multiple-->
+<!--					hide-dropdown-icon-->
+<!--					input-debounce="0"-->
+<!--					new-value-mode="add-unique"-->
+<!--					class="q-mb-lg"-->
+<!--				/>-->
 			</div>
 
 			<div>
