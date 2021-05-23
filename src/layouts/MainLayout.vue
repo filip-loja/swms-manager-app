@@ -8,7 +8,7 @@
           SWMS Manager
         </q-toolbar-title>
 
-        <div>Created by: <b>Filip Loja</b></div>
+				<q-btn flat no-caps><q-icon name="logout" size="xs" />&nbsp;&nbsp;&nbsp;Log out</q-btn>
       </q-toolbar>
     </q-header>
 		<swms-drawer />
@@ -17,6 +17,8 @@
 			<swms-option-panel />
 			<swms-bin-table />
     </q-page-container>
+
+		<swms-loader />
   </q-layout>
 </template>
 
@@ -25,10 +27,11 @@ import Vue from 'vue'
 import SwmsDrawer from 'components/SwmsDrawer.vue'
 import SwmsOptionPanel from 'components/SwmsOptionPanel.vue'
 import SwmsBinTable from 'components/SwmsBinTable.vue'
+import SwmsLoader from 'components/SwmsLoader.vue'
 
 export default Vue.extend({
   name: 'MainLayout',
-	components: { SwmsDrawer, SwmsOptionPanel, SwmsBinTable },
+	components: { SwmsDrawer, SwmsOptionPanel, SwmsBinTable, SwmsLoader },
   data() {
     return {
     }

@@ -32,7 +32,7 @@
 					<div class="col" v-if="!inCreateMode">
 						<q-input v-model="model.binId" readonly outlined dense bg-color="white" label="Smart Bin ID">
 							<template v-slot:append>
-								<q-btn round flat size="sm" icon="content_paste" />
+								<q-btn round flat size="sm" icon="content_paste" @click="toClipboard(model.binId)" />
 							</template>
 						</q-input>
 					</div>
@@ -45,14 +45,14 @@
 					<div class="col">
 						<q-input v-model="model.lat" outlined dense bg-color="white" label="Latitude" type="number">
 							<template v-slot:append v-if="model.lat">
-								<q-btn round flat size="sm" icon="content_paste" />
+								<q-btn round flat size="sm" icon="content_paste" @click="toClipboard(model.lat)" />
 							</template>
 						</q-input>
 					</div>
 					<div class="col">
 						<q-input v-model="model.lon" outlined dense bg-color="white" label="Longitude" type="number">
 							<template v-slot:append v-if="model.lon">
-								<q-btn round flat size="sm" icon="content_paste" />
+								<q-btn round flat size="sm" icon="content_paste" @click="toClipboard(model.lon)" />
 							</template>
 						</q-input>
 					</div>
@@ -64,7 +64,7 @@
 				<div v-if="!inCreateMode" class="q-mb-md">
 					<q-input v-model="model.connectionString" outlined dense bg-color="white" label="Connection string" readonly>
 						<template v-slot:append>
-							<q-btn round flat size="sm" icon="content_paste" />
+							<q-btn round flat size="sm" icon="content_paste" @click="toClipboard(model.connectionString)" />
 						</template>
 					</q-input>
 					<p class="text-caption text-grey-7">Use this string to pair the smart bin with the system. </p>
@@ -116,6 +116,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { BinDetail, GenericOptionItem } from 'src/store/store'
+import { copyToClipboard } from 'quasar'
 
 const generateModel = (): BinDetail => {
   return {
@@ -160,6 +161,15 @@ export default Vue.extend({
 		},
     onDrawerHidden (): void {
 	    this.model = null
+		},
+		toClipboard (value: any) {
+	    void copyToClipboard(value).then(() => {
+	      this.$q.notify({
+          progress: true,
+          message: 'Copied to clipboard',
+          timeout: 2500
+        })
+			})
 		}
 	},
 	computed: {

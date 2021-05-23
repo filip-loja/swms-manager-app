@@ -5,6 +5,10 @@ export const SET_DRAWER = (state: StateRoot, newState: boolean) => {
   state.drawerState = newState
 }
 
+export const SET_LOADING = (state: StateRoot, value: number) => {
+  state.loading += value
+}
+
 export const SET_ACTIVE_BIN = (state: StateRoot, bindId: string) => {
   state.activeBinId = bindId
 }

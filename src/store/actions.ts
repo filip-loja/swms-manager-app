@@ -16,6 +16,7 @@ export const closeDrawer = (context: A) => {
 }
 
 export const loadConnectionString = (context: A, binId: string) => {
+  context.commit('SET_LOADING', 1)
   return Vue.prototype.$apiManager.get(`bin/${binId}/connection`)
     .then((resp: any) => {
       const payload = { binId, connectionString: resp.data.data }
@@ -23,9 +24,11 @@ export const loadConnectionString = (context: A, binId: string) => {
       return resp.data.data
     })
     .catch((err: any) => console.log(err.response.data.error))
+    .finally(() => context.commit('SET_LOADING', -1))
 }
 
 export const loadBins = (context: A, filterObj?: BinFilter) => {
+  context.commit('SET_LOADING', 1)
   if (filterObj) {
     context.commit('SET_FILTER_OBJ', filterObj)
     context.commit('CLEAR_ITEMS')
@@ -34,21 +37,25 @@ export const loadBins = (context: A, filterObj?: BinFilter) => {
     ...context.state.binFilter,
     token: context.state.nextToken
   }
-  Vue.prototype.$apiManager.post('bin/list', payload).then((resp: any) => {
-    context.commit('APPEND_ITEMS', resp.data.data.items)
-    context.commit('SET_NEXT_TOKEN', resp.data.data.nextToken)
-  }).catch((err: any) => {
-    console.log(err.response.data.error)
-    Notify.create({
-      progress: true,
-      message: JSON.stringify(err.response.data.error).replace(/["\\{}]/g, ' ').trim(),
-      color: 'negative',
-      timeout: 7000
+  Vue.prototype.$apiManager.post('bin/list', payload)
+    .then((resp: any) => {
+      context.commit('APPEND_ITEMS', resp.data.data.items)
+      context.commit('SET_NEXT_TOKEN', resp.data.data.nextToken)
     })
-  })
+    .catch((err: any) => {
+      console.log(err.response.data.error)
+      Notify.create({
+        progress: true,
+        message: JSON.stringify(err.response.data.error).replace(/["\\{}]/g, ' ').trim(),
+        color: 'negative',
+        timeout: 7000
+      })
+    })
+    .finally(() => context.commit('SET_LOADING', -1))
 }
 
 export const deleteBin = (context: A, binId: string) => {
+  context.commit('SET_LOADING', 1)
   Vue.prototype.$apiManager.delete(`/bin/delete/${binId}`)
     .then(() => {
       context.commit('DELETE_BIN', binId)
@@ -71,9 +78,11 @@ export const deleteBin = (context: A, binId: string) => {
         timeout: 7000
       })
     })
+    .finally(() => context.commit('SET_LOADING', -1))
 }
 
 export const findBinById = (context: A, binId: string) => {
+  context.commit('SET_LOADING', 1)
   Vue.prototype.$apiManager.get(`bin/${binId}`)
     .then((resp: any) => {
       context.commit('CLEAR_ITEMS')
@@ -90,6 +99,7 @@ export const findBinById = (context: A, binId: string) => {
         timeout: 3000
       })
     })
+    .finally(() => context.commit('SET_LOADING', -1))
 }
 
 export const closeIdSearchMode = (context: A) => {

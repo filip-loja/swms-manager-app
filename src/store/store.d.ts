@@ -12,6 +12,7 @@ export interface StateRoot {
   binItems: BinDetail[];
   nextToken: undefined;
   idSearchActive: boolean;
+  loading: number;
 }
 
 export interface BinDetail {

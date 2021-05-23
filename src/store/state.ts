@@ -14,4 +14,5 @@ export default (): StateRoot => ({
   binItems: [],
   nextToken: null,
   idSearchActive: false,
+  loading: 0,
 })
