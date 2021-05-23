@@ -1,4 +1,5 @@
 import { BinDetail, BinFilter, StateRoot } from 'src/store/store'
+import Vue from 'vue'
 
 export const SET_DRAWER = (state: StateRoot, newState: boolean) => {
   state.drawerState = newState
@@ -33,6 +34,13 @@ export const DELETE_BIN = (state: StateRoot, binId: string) => {
   const index = state.binItems.findIndex((item: BinDetail) => item.binId === binId)
   if (index >= 0) {
     state.binItems.splice(index, 1)
+  }
+}
+
+export const UPDATE_BIN = (state: StateRoot, payload: BinDetail) => {
+  const index = state.binItems.findIndex((item: BinDetail) => item.binId === payload.binId)
+  if (index >= 0) {
+    Vue.set(state.binItems, index, Object.assign({}, state.binItems[index], payload))
   }
 }
 

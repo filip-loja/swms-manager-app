@@ -62,7 +62,7 @@
 				</div>
 
 				<div v-if="!inCreateMode" class="q-mb-md">
-					<q-input v-model="model.connectionString" outlined dense bg-color="white" label="Connection string">
+					<q-input v-model="model.connectionString" outlined dense bg-color="white" label="Connection string" readonly>
 						<template v-slot:append>
 							<q-btn round flat size="sm" icon="content_paste" />
 						</template>
@@ -148,6 +148,10 @@ export default Vue.extend({
 				this.model.type = {
           label: this.model.type.charAt(0).toUpperCase() + this.model.type.slice(1),
 					value: this.model.type
+				}
+				if (this.model && !this.model.connectionString) {
+				  void this.$store.dispatch('loadConnectionString', this.binId)
+						.then(str => this.$set(this.model, 'connectionString', str))
 				}
 			}
 	    if (!this.model) {

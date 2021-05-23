@@ -15,6 +15,16 @@ export const closeDrawer = (context: A) => {
   context.commit('SET_DRAWER', false)
 }
 
+export const loadConnectionString = (context: A, binId: string) => {
+  return Vue.prototype.$apiManager.get(`bin/${binId}/connection`)
+    .then((resp: any) => {
+      const payload = { binId, connectionString: resp.data.data }
+      context.commit('UPDATE_BIN', payload)
+      return resp.data.data
+    })
+    .catch((err: any) => console.log(err.response.data.error))
+}
+
 export const loadBins = (context: A, filterObj?: BinFilter) => {
   if (filterObj) {
     context.commit('SET_FILTER_OBJ', filterObj)
