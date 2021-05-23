@@ -4,10 +4,19 @@ import { boot } from 'quasar/wrappers';
 declare module 'vue/types/vue' {
   interface Vue {
     $axios: AxiosInstance;
+    $apiManager: AxiosInstance;
   }
 }
 
 export default boot(({ Vue }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  Vue.prototype.$axios = axios;
-});
+  Vue.prototype.$axios = axios
+
+  const apiManager = axios.create({
+    baseURL: process.env.managerApiUrl,
+    timeout: 10000
+  })
+  // TODO vymazat pred commitom
+  apiManager.defaults.headers.common['Authorization'] = ''
+  Vue.prototype.$apiManager = apiManager
+})

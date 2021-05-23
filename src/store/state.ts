@@ -11,4 +11,6 @@ export default (): StateRoot => ({
     type: [] as any,
     status: [] as any
   },
+  binItems: [],
+  nextToken: null
 })

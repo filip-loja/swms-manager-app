@@ -9,6 +9,8 @@ export interface StateRoot {
   binStatusValues: TypeBinStatus[];
   binTypeValues: TypeGarbage[];
   binFilter: BinFilter;
+  binItems: BinDetail[];
+  nextToken: undefined;
 }
 
 export interface BinDetail {
