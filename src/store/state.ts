@@ -1,6 +1,7 @@
 import { StateRoot } from 'src/store/store'
 
 export default (): StateRoot => ({
+  loggedIn: false,
   drawerState: false,
   filterDialogState: false,
   activeBinId: null,

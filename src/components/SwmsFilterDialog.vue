@@ -37,9 +37,9 @@
 			<q-separator />
 
 			<q-card-actions align="around">
-				<q-btn flat color="primary" @click="onFilter">Filter</q-btn>
-				<q-btn flat color="secondary" @click="onClear">Clear all</q-btn>
-				<q-btn flat color="negative" @click="onCancel">Cancel</q-btn>
+				<q-btn flat no-caps color="primary" @click="onFilter">Filter</q-btn>
+				<q-btn flat no-caps color="secondary" @click="onClear">Clear all</q-btn>
+				<q-btn flat no-caps color="negative" @click="onCancel">Cancel</q-btn>
 			</q-card-actions>
 		</q-card>
 	</q-dialog>

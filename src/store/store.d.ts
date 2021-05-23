@@ -3,6 +3,7 @@ export type TypeGarbage = 'plastic' | 'paper' | 'glass' | 'metal' | 'mixed'
 export type TypeBinStatus = 'disabled' | 'enabled'
 
 export interface StateRoot {
+  loggedIn: boolean;
   drawerState: boolean;
   filterDialogState: boolean;
   activeBinId: string;

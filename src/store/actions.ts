@@ -2,6 +2,8 @@ import { ActionContext } from 'vuex'
 import { BinDetail, BinFilter, StateRoot } from 'src/store/store'
 import { Notify } from 'quasar'
 import Vue from 'vue'
+import config from 'src/config'
+import { Cookies } from 'quasar'
 
 type A = ActionContext<StateRoot, StateRoot>
 
@@ -157,4 +159,45 @@ export const updateBinDetails = (context: A, payload: BinDetail) => {
       })
     })
     .finally(() => context.commit('SET_LOADING', -1))
+}
+
+export const logIn = (context: A, payload: any) => {
+  context.commit('SET_LOADING', 1)
+  if (payload.username !== 'filip.loja' || payload.password !== 'swsmlnu') {
+    return setTimeout(() => {
+      context.commit('SET_LOADING', -1)
+      Notify.create({
+        progress: true,
+        message: 'Invalid credentials',
+        color: 'negative',
+        timeout: 2000
+      })
+    }, 2000)
+  }
+
+  return new Promise(resolve => {
+    return setTimeout(() => {
+      const key = config.API_MANAGER_KEY
+      Vue.prototype.$apiManager.defaults.headers.common['Authorization'] = key
+      Cookies.set('swsm-manager-key', key)
+      context.commit('SET_LOGIN_STATE', true)
+      context.commit('SET_LOADING', -1)
+      resolve()
+    }, 1500)
+  })
+
+}
+
+export const logOut = (context: A) => {
+  delete Vue.prototype.$apiManager.defaults.headers.common['Authorization']
+  Cookies.remove('swsm-manager-key')
+  context.commit('SET_LOGIN_STATE', false)
+}
+
+export const loadManagerKey = (context: A) => {
+  const key = Cookies.get('swsm-manager-key')
+  if (key) {
+    Vue.prototype.$apiManager.defaults.headers.common['Authorization'] = key
+    context.commit('SET_LOGIN_STATE', true)
+  }
 }

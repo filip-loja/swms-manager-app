@@ -1,6 +1,10 @@
 import { BinDetail, BinFilter, StateRoot } from 'src/store/store'
 import Vue from 'vue'
 
+export const SET_LOGIN_STATE = (state: StateRoot, newState: boolean) => {
+  state.loggedIn = newState
+}
+
 export const SET_DRAWER = (state: StateRoot, newState: boolean) => {
   state.drawerState = newState
 }

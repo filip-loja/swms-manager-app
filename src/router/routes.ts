@@ -1,11 +1,35 @@
-import { RouteConfig } from 'vue-router';
+import { RouteConfig } from 'vue-router'
+import store from 'src/store/index'
 
 const routes: RouteConfig[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      {
+        path: '',
+        name: 'home',
+        component: () => import('pages/Index.vue'),
+        beforeEnter (to, from, next) {
+          if (!store.state.loggedIn) {
+            next({ name: 'logIn' })
+          } else {
+            next()
+          }
+        }
+      },
+      {
+        path: '/login',
+        name: 'logIn',
+        component: () => import('pages/LogIn.vue'),
+        beforeEnter (to, from, next) {
+          if (store.state.loggedIn) {
+            next({ name: 'home' })
+          } else {
+            next()
+          }
+        }
+      }
     ]
   },
 
@@ -15,6 +39,6 @@ const routes: RouteConfig[] = [
     path: '*',
     component: () => import('pages/Error404.vue')
   }
-];
+]
 
-export default routes;
+export default routes

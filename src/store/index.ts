@@ -5,6 +5,7 @@ import * as mutations from 'src/store/mutations'
 import * as actions from 'src/store/actions'
 import * as getters from 'src/store/getters'
 import { StateRoot } from 'src/store/store'
+import Vue from 'vue'
 
 // import example from './module-example';
 // import { ExampleStateInterface } from './module-example/state';
@@ -18,22 +19,18 @@ export interface StateInterface extends StateRoot {
   example?: unknown;
 }
 
-export default store(function ({ Vue }) {
-  Vue.use(Vuex)
+Vue.use(Vuex)
 
-  const Store = new Vuex.Store<StateInterface>({
-    modules: {
-      // example
-    },
-    state,
-    mutations,
-    actions,
-    getters,
+export default new Vuex.Store<StateInterface>({
+  modules: {
+    // example
+  },
+  state,
+  mutations,
+  actions,
+  getters,
 
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: !!process.env.DEBUGGING
-  })
-
-  return Store
+  // enable strict mode (adds overhead!)
+  // for dev mode only
+  strict: !!process.env.DEBUGGING
 })
