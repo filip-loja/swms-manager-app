@@ -19,16 +19,14 @@
 				</td>
 			</tr>
 		</table>
-		<template v-else>
-			<q-banner class="bg-deep-orange-2">
-				<template v-slot:avatar>
-					<q-icon name="sentiment_dissatisfied" color="negative" />
-				</template>
-				<div class="text-negative text-bold">
-					No smart binds found. Try changing settings of the filter.
-				</div>
-			</q-banner>
-		</template>
+		<q-banner v-if="showBanner" class="bg-deep-orange-2">
+			<template v-slot:avatar>
+				<q-icon name="sentiment_dissatisfied" color="negative" />
+			</template>
+			<div class="text-negative text-bold">
+				No smart binds found. Try changing settings of the filter.
+			</div>
+		</q-banner>
 		<div class="text-center full-width" v-if="hasMore">
 			<br />
 			<q-btn flat color="primary" @click="loadMore">Load more</q-btn>
@@ -49,7 +47,10 @@ export default Vue.extend({
     },
     hasMore (): boolean {
       return !!this.$store.state.nextToken
-    }
+    },
+		showBanner (): boolean {
+      return this.binItems.length === 0 && this.$store.state.loading <= 0
+		}
 	},
 	methods: {
     loadMore () {

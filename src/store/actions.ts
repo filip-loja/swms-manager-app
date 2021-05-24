@@ -212,7 +212,7 @@ export const logIn = (context: A, payload: any) => {
       Cookies.set('swsm-manager-key', key)
       context.commit('SET_LOGIN_STATE', true)
       context.commit('SET_LOADING', -1)
-      resolve()
+      resolve(true)
     }, 1500)
   })
 
@@ -222,6 +222,8 @@ export const logOut = (context: A) => {
   delete Vue.prototype.$apiManager.defaults.headers.common['Authorization']
   Cookies.remove('swsm-manager-key')
   context.commit('SET_LOGIN_STATE', false)
+  context.commit('CLEAR_ITEMS')
+  context.commit('SET_NEXT_TOKEN', undefined)
 }
 
 export const loadManagerKey = (context: A) => {

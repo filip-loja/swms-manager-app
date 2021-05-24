@@ -1,4 +1,3 @@
-import { store } from 'quasar/wrappers'
 import Vuex from 'vuex'
 import state from 'src/store/state'
 import * as mutations from 'src/store/mutations'
