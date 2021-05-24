@@ -19,6 +19,16 @@
 				</td>
 			</tr>
 		</table>
+		<template v-else>
+			<q-banner class="bg-deep-orange-2">
+				<template v-slot:avatar>
+					<q-icon name="sentiment_dissatisfied" color="negative" />
+				</template>
+				<div class="text-negative text-bold">
+					No smart binds found. Try changing settings of the filter.
+				</div>
+			</q-banner>
+		</template>
 		<div class="text-center full-width" v-if="hasMore">
 			<br />
 			<q-btn flat color="primary" @click="loadMore">Load more</q-btn>
