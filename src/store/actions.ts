@@ -193,7 +193,7 @@ export const createBin = (context: A, payload: BinDetail) => {
 
 export const logIn = (context: A, payload: any) => {
   context.commit('SET_LOADING', 1)
-  if (payload.username !== 'filip.loja' || payload.password !== 'swsmlnu') {
+  if (payload.username !== 'filip.loja' || payload.password !== 'swmslnu') {
     return setTimeout(() => {
       context.commit('SET_LOADING', -1)
       Notify.create({
